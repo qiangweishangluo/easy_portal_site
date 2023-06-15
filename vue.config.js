@@ -1,18 +1,25 @@
-const path = require('path')
+const path = require("path");
 function resolve(dir) {
-  return path.join(__dirname, dir)
+  return path.join(__dirname, dir);
 }
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: '啊哈',
+    name: "啊哈",
     resolve: {
       alias: {
-        '@': resolve('src')
-      }
-    }
+        "@": resolve("src"),
+      },
+    },
   },
-})
+  // css: {
+  //   loaderOptions: {
+  //     sass: {
+  //       data: `@import "./src/styles/element-variables";`,
+  //     },
+  //   },
+  // },
+});
