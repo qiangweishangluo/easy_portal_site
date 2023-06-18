@@ -98,7 +98,7 @@
         >
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false"
-            >确 定</el-button
+            >确认投标并加密</el-button
           >
         </span>
       </el-dialog>
