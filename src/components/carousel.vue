@@ -57,10 +57,12 @@ export default {
 }
 .content {
   width: 100%;
-  height: 20px;
+  height: 48px;
   position: absolute;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   color: white;
+  font-size: 24px;
+  line-height: 24px;
 }
 </style>

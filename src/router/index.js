@@ -22,7 +22,7 @@ const routes = [
     name: "home",
     component: index,
     meta: {
-      title: "xxx招标一体化平台",
+      title: "黑龙江辰泰信德项目管理有限公司招标投标一体化管理平台",
       keyword: "home",
       description: "home",
     },
@@ -32,7 +32,7 @@ const routes = [
     name: "application",
     component: application,
     meta: {
-      title: "xxx招标一体化平台",
+      title: "报名",
       keyword: "application",
       description: "application",
     },
@@ -42,7 +42,7 @@ const routes = [
     name: "bid",
     component: bid,
     meta: {
-      title: "xxx招标一体化平台",
+      title: "投标",
       keyword: "bid",
       description: "bid",
     },
@@ -52,7 +52,7 @@ const routes = [
     name: "bid_opening",
     component: bid_opening,
     meta: {
-      title: "xxx招标一体化平台",
+      title: "开标",
       keyword: "bid_opening",
       description: "bid_opening",
     },
@@ -62,7 +62,7 @@ const routes = [
     name: "aq",
     component: aq,
     meta: {
-      title: "xxx招标一体化平台",
+      title: "澄清答疑",
       keyword: "aq",
       description: "aq",
     },
