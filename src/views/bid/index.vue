@@ -41,7 +41,7 @@
                 只能上传jpg/png文件，且不超过500kb
               </div>
             </el-upload>
-            <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
+            <img src="/api/upload/image" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
