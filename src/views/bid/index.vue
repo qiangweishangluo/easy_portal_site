@@ -6,16 +6,16 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="投标人名称">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.bidder"></el-input>
           </el-form-item>
           <el-form-item label="投标履约期限">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.deadline"></el-input>
           </el-form-item>
           <el-form-item label="投标保障金金额">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.earnestMoney"></el-input>
           </el-form-item>
           <el-form-item label="联系电话">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.phone"></el-input>
           </el-form-item>
           <el-form-item label="投标文件">
             <el-upload
@@ -44,13 +44,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="投标报价">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.quotedPrice"></el-input>
           </el-form-item>
           <el-form-item label="授权委托人名称">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.consignor"></el-input>
           </el-form-item>
-          <el-form-item label="联系人">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="委托人联系方式">
+            <el-input v-model="form.consignorphonbe"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -79,14 +79,20 @@ export default {
     return {
       dialogVisible: false,
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        identification: "11111",
+        bidder: "投标人名称",
+        deadline: "投标履行期限",
+        earnestMoney: 1.4,
+        phone: "1212121",
+        quotedPrice: 1.3,
+        consignor: "委托人",
+        consignorphonbe: "委托人联系方式",
+        images: [
+          {
+            id: 1,
+            link: "wwwwww",
+          },
+        ],
       },
       fileList: [],
     };

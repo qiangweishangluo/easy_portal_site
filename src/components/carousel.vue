@@ -14,7 +14,7 @@
     >
       <slide v-for="(item, i) in imgList" :index="i" :key="i">
         <div>
-          <img :src="item.imgUrl" alt="" />
+          <img :src="item.img" alt="" />
           <div class="content">{{ item.content }}</div>
         </div>
       </slide>
@@ -22,6 +22,7 @@
   </div>
 </template>
 <script>
+import { homePageImages } from "@/api/index";
 import img1 from "@/assets/1.jpg";
 import img2 from "@/assets/2.jpg";
 import img3 from "@/assets/3.jpg";
@@ -37,13 +38,25 @@ export default {
   data() {
     return {
       imgList: [
-        { imgUrl: img1, content: "介绍。。。。。" },
-        { imgUrl: img2, content: "介绍。。。。。" },
-        { imgUrl: img3, content: "介绍。。。。。" },
-        { imgUrl: img4, content: "介绍。。。。。" },
-        { imgUrl: img5, content: "介绍。。。。。" },
+        { img: img1, content: "介绍。。。。。" },
+        { img: img2, content: "介绍。。。。。" },
+        { img: img3, content: "介绍。。。。。" },
+        { img: img4, content: "介绍。。。。。" },
+        { img: img5, content: "介绍。。。。。" },
       ],
     };
+  },
+  created() {
+    this.homePageImages();
+  },
+  methods: {
+    homePageImages() {
+      homePageImages().then((res) => {
+        if (res.code === 1) {
+          this.imgList = res.data.list;
+        }
+      });
+    },
   },
 };
 </script>

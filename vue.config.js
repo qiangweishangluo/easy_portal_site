@@ -14,6 +14,7 @@ module.exports = defineConfig({
         "@": resolve("src"),
       },
     },
+    // overlay: false,
   },
   // css: {
   //   loaderOptions: {

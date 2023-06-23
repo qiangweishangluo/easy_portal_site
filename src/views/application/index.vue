@@ -12,13 +12,13 @@
             ><div class="textLeft">xxxx</div>
           </el-form-item>
           <el-form-item label="联系人">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.applicantName"></el-input>
           </el-form-item>
           <el-form-item label="联系电话">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.phone"></el-input>
           </el-form-item>
           <el-form-item label="联系地址">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.address"></el-input>
           </el-form-item>
           <el-form-item label="营业执照扫描件">
             <el-upload
@@ -68,22 +68,23 @@
               </div>
             </el-upload>
           </el-form-item>
-
           <el-form-item label="招标文书费二维码">
             <img src="@/assets/logo.png" alt="" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="投标单位名称">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.company"></el-input>
           </el-form-item>
           <el-form-item label="营业执照编号">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.businessLicense"></el-input>
           </el-form-item>
           <el-form-item label="法定代表人姓名">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.corporate"></el-input>
           </el-form-item>
-          <el-form-item label="授权委托人姓名"> </el-form-item>
+          <el-form-item label="授权委托人姓名">
+            <el-input v-model="form.委托人"></el-input>
+          </el-form-item>
           <el-form-item label="法定代表人身份证扫描件"> </el-form-item>
           <el-form-item label="授权委托书扫描件"> </el-form-item>
           <el-form-item label="付款凭证"> </el-form-item>
@@ -116,14 +117,21 @@ export default {
     return {
       dialogVisible: false,
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        code: "项目编码",
+        applicantName: "申请人",
+        phone: "电话",
+        address: "地址",
+        company: "投标公司",
+        businessLicense: "营业执照",
+        corporate: "法人",
+        consignor: "委托人",
+        detail: {
+          businessLicense: ["www.aaa.com", "www.aaa.com"],
+          consignor: ["www.aaa.com", "www.aaa.com"],
+          corporate: ["www.aaa.com", "www.aaa.com"],
+          authorization: ["www.aaa.com", "www.aaa.com"],
+          evidencePayment: ["www.aaa.com", "www.aaa.com"],
+        },
       },
       fileList: [],
     };
@@ -165,7 +173,7 @@ export default {
 }
 .content {
   display: block;
-  width:60%;
+  width: 60%;
   text-align: center;
   margin: 0 auto;
   margin-top: 20px;
