@@ -20,7 +20,7 @@
           <el-form-item label="投标文件">
             <el-upload
               class="upload-demo"
-              action=""
+              action="/api/upload"
               :on-preview="
                 (file) => {
                   return handlePreview(file, 'fileList');
@@ -33,6 +33,7 @@
                   return handleExceed(files, fileList, 'fileList');
                 }
               "
+              :on-success="handleAvatarSuccess"
               :file-list="fileList"
             >
               <el-button size="small" type="primary">点击上传</el-button>
@@ -40,6 +41,7 @@
                 只能上传jpg/png文件，且不超过500kb
               </div>
             </el-upload>
+            <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -95,6 +97,7 @@ export default {
         ],
       },
       fileList: [],
+      imageUrl: [],
     };
   },
   methods: {
@@ -114,6 +117,9 @@ export default {
           files.length + fileList.length
         } 个文件`
       );
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
     },
   },
 };
