@@ -3,9 +3,9 @@
     <portalTitle />
     <carousel />
     <el-tabs class="portal_tabs" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane v-for="(item, index) in tabsList" :key="index" :label="item.name" :name="item.name">
+      <el-tab-pane v-for="(item, index) in tabsList" :key="index" :label="item.name" :name="item.value">
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="日期"> </el-table-column>
+          <el-table-column prop="time" label="日期"> </el-table-column>
           <el-table-column prop="name" label="公告"> </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -23,8 +23,8 @@
       <el-input v-model="searchData" suffix-icon="el-icon-search" style="width: 200px"></el-input>
       <el-button type="primary" @click="search">查询</el-button>
       <el-table :data="tableData2" style="width: 100%">
-        <el-table-column prop="date" label="日期"> </el-table-column>
-        <el-table-column prop="name" label="姓名"> </el-table-column>
+        <el-table-column prop="time" label="日期"> </el-table-column>
+        <el-table-column prop="name" label="公告"> </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button @click="application(scope.row)" type="text" size="small">报名</el-button>
@@ -42,7 +42,7 @@
 <script>
 import carousel from "@/components/carousel.vue";
 import portalTitle from "@/components/title.vue";
-import { login } from "@/api/index"
+import { getAnnouncements } from "@/api/index"
 export default {
   name: "HomeView",
   components: {
@@ -53,71 +53,81 @@ export default {
     return {
       activeName: "采购公告",
       tabsList: [
-        { name: "采购公告" },
-        { name: "更正公告" },
-        { name: "中标（成交）公告" },
-        { name: "中标（成交）公正公告" },
-        { name: "废标公告" },
+        { name: "采购公告", value: "cg" },
+        { name: "更正公告", value: 'gz' },
+        { name: "中标（成交）公告", value: 'zbgg' },
+        { name: "中标（成交）公正公告", value: 'zbgz' },
+        { name: "废标公告", value: 'fb' },
       ],
       tableData: [
         {
-          date: "2016-05-02",
+          time: "2016-05-02",
           name: "XXXXXXX招标",
         },
         {
-          date: "2016-05-04",
+          time: "2016-05-04",
           name: "XXXXXXX招标",
         },
         {
-          date: "2016-05-01",
+          time: "2016-05-01",
           name: "XXXXXXX招标",
         },
       ],
       tableData2: [
         {
-          date: "2016-05-02",
+          time: "2016-05-02",
           name: "XXXXXXX招标",
         },
         {
-          date: "2016-05-04",
+          time: "2016-05-04",
           name: "XXXXXXX招标",
         },
         {
-          date: "2016-05-01",
+          time: "2016-05-01",
           name: "XXXXXXX招标",
         },
       ],
-
+      metaTable: {},
       dialogVisible: false,
       searchData: "",
     };
   },
-  created() { this.login() },
+  created() { this.getAnnouncements() },
   methods: {
     handleClick() {
-      this.tableData = [
-        {
-          date: "2016-05-02",
-          name: "XX2222标",
-        },
-        {
-          date: "2016-05-04",
-          name: "XX22标",
-        },
-        {
-          date: "2016-05-01",
-          name: "XXXX22标",
-        },
-      ];
+      // 变更列表信息
+      switch (this.activeName) {
+        case "cg":
+          this.tableData = this.metaTable?.purchase
+          break;
+        case "gz":
+          this.tableData = this.metaTable?.amend
+          break;
+        case "zbgg":
+          this.tableData = this.metaTable?.deal
+          break;
+        case "zbgz":
+          this.tableData = this.metaTable?.dealJustice
+          break;
+        case "fb":
+          this.tableData = this.metaTable?.abolish
+          break;
+      }
     },
-    application(row) {
+    application() {
       this.$router.push("/application");
-      console.log(row);
     },
-    search() { },
-    login() {
-      login().then((res) => {
-        console.log(res);
+    search() {
+      // 前端模糊查询
+      this.tableData2 = this.metaTable?.purchase?.filter((item) => {
+        return ~item.name.indexOf(this.searchData) || ~item.time.indexOf(this.searchData)
+      })
+    },
+    getAnnouncements() {
+      // 获取公告信息
+      getAnnouncements().then((res) => {
+        this.metaTable = res.data.announcements
+        // this.tableData2 = res.data.announcements?.purchase // 采购公告
       })
     }
   },

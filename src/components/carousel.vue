@@ -1,20 +1,10 @@
 <template>
   <div class="carousel">
-    <carousel-3d
-      :perspective="0"
-      :space="400"
-      :display="3"
-      :controls-visible="true"
-      :controls-prev-html="'&#10092; '"
-      :controls-next-html="'&#10093;'"
-      :controls-width="30"
-      :controls-height="60"
-      width="800"
-      height="533"
-    >
+    <carousel-3d :perspective="0" :space="400" :display="3" :controls-visible="true" :controls-prev-html="'&#10092; '"
+      :controls-next-html="'&#10093;'" :controls-width="30" :controls-height="60" width="800" height="533">
       <slide v-for="(item, i) in imgList" :index="i" :key="i">
         <div>
-          <img :src="item.img" alt="" />
+          <img :src="item.url" alt="" />
           <div class="content">{{ item.content }}</div>
         </div>
       </slide>
@@ -22,7 +12,7 @@
   </div>
 </template>
 <script>
-import { homePageImages } from "@/api/index";
+import { getBanners } from "@/api/index";
 import img1 from "@/assets/1.jpg";
 import img2 from "@/assets/2.jpg";
 import img3 from "@/assets/3.jpg";
@@ -38,22 +28,24 @@ export default {
   data() {
     return {
       imgList: [
-        { img: img1, content: "介绍。。。。。" },
-        { img: img2, content: "介绍。。。。。" },
-        { img: img3, content: "介绍。。。。。" },
-        { img: img4, content: "介绍。。。。。" },
-        { img: img5, content: "介绍。。。。。" },
+        { url: img1, content: "介绍。。。。。" },
+        { url: img2, content: "介绍。。。。。" },
+        { url: img3, content: "介绍。。。。。" },
+        { url: img4, content: "介绍。。。。。" },
+        { url: img5, content: "介绍。。。。。" },
       ],
     };
   },
   created() {
-    this.homePageImages();
+    this.getBanners();
   },
   methods: {
-    homePageImages() {
-      homePageImages().then((res) => {
-        if (res.code === 1) {
-          this.imgList = res.data.list;
+    getBanners() {
+      getBanners().then((res) => {
+        // 获取轮播
+        if (res.code === 0) {
+          const { banners } = res.data
+          this.imgList = banners.length > 0 ? banners : this.imgList;
         }
       });
     },
@@ -65,9 +57,11 @@ export default {
   background-color: transparent;
   border: 0;
 }
+
 .carousel {
   position: relative;
 }
+
 .content {
   width: 100%;
   height: 48px;
