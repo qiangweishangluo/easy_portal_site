@@ -1,0 +1,62 @@
+a
+<template>
+  <div>
+    <el-dialog
+      :title="`输入密码进行${content}`"
+      :visible.sync="password.dialogVisible"
+      width="50%"
+    >
+      <span></span>
+      <el-input v-model="password.count"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose">取 消</el-button>
+        <el-button type="primary" @click="onSubmit">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+<script>
+export default {
+  name: "checkPassword",
+  model: {
+    prop: "passwordData",
+    event: "change",
+  },
+  props: { passwordData: { type: Object, default: () => {} } },
+  components: {},
+  data() {
+    return {
+      password: this.passwordData,
+      // content: "报名",
+    };
+  },
+  computed: {
+    content() {
+      switch (this.password.type) {
+        case "bid":
+          return "投标";
+        case "bid_opening":
+          return "开标";
+        case "aq":
+          return "二次澄清/报价";
+      }
+      return "";
+    },
+  },
+  methods: {
+    onSubmit() {
+      if (this.password.count == null) {
+        this.$message.error("请输入密码");
+        return;
+      }
+      this.password.dialogVisible = false;
+      this.$emit("link");
+    },
+    handleClose() {
+      this.password.dialogVisible = false;
+      this.$emit("change", this.password);
+    },
+  },
+};
+</script>
+<style lang="scss" scoped></style>
