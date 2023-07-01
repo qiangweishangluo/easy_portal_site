@@ -8,13 +8,22 @@ module.exports = defineConfig({
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: "啊哈",
+    name: "easy",
     resolve: {
       alias: {
         "@": resolve("src"),
       },
     },
-    // overlay: false,
+  },
+  devServer: {
+    open: true,
+    proxy: {
+      "/api": {
+        target: "http://47.95.37.110:8000",
+        ws: true,
+        changeOrigin: true
+      }
+    }
   },
   // css: {
   //   loaderOptions: {
