@@ -1,65 +1,50 @@
 <template>
-  <div class="home">
+  <div>
     <portalTitle />
-    <carousel />
-    <el-tabs class="portal_tabs" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane
-        v-for="(item, index) in tabsList"
-        :key="index"
-        :label="item.name"
-        :name="item.value"
-      >
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="time" label="日期"> </el-table-column>
-          <el-table-column prop="name" label="公告"> </el-table-column>
-        </el-table>
-      </el-tab-pane>
-    </el-tabs>
-    <el-row>
-      <el-button class="portal_button" @click="dialogVisible = true"
-        >报名入口</el-button
-      >
-      <el-button class="portal_button" @click="open('bid')">投标入口</el-button>
-      <el-button class="portal_button" @click="open('bid_opening')"
-        >开标入口</el-button
-      >
-      <el-button class="portal_button" @click="open('aq')"
-        >澄清/二次报价</el-button
-      >
-    </el-row>
-    <div class="portal_bottom">备案：</div>
+    <div class="home">
+      <carousel />
+      <el-tabs class="portal_tabs" v-model="activeName" @tab-click="handleClick" :key="activeName">
+        <el-tab-pane v-for="(item, index) in tabsList" :key="index" :label="item.name" :name="item.value">
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
+              <template slot-scope="scope">
+                <a v-if="item.key == 'name' && scope.row.detail" :href="scope.row.detail.url">{{ scope.row.name }}</a>
+                <div v-else>
+                  {{ scope.row[item.key] }}
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+      <el-row>
+        <el-button type="primary" class="portal_button" @click="dialogVisible = true">报名入口</el-button>
+        <el-button type="primary" class="portal_button" @click="open('bid')">投标入口</el-button>
+        <el-button type="primary" class="portal_button" @click="open('bid_opening')">开标入口</el-button>
+        <el-button type="primary" class="portal_button" @click="open('aq')">澄清/二次报价</el-button>
+      </el-row>
+      <div class="portal_bottom">备案：</div>
 
-    <el-dialog
-      title="请输入项目名称/编号查找"
-      :visible.sync="dialogVisible"
-      width="60%"
-    >
-      项目名称/编号：
-      <el-input
-        v-model="searchData"
-        suffix-icon="el-icon-search"
-        style="width: 200px"
-      ></el-input>
-      <el-button type="primary" @click="search">查询</el-button>
-      <el-table :data="tableData2" style="width: 100%">
-        <el-table-column prop="time" label="日期"> </el-table-column>
-        <el-table-column prop="name" label="公告"> </el-table-column>
-        <el-table-column fixed="right" label="操作">
-          <template slot-scope="scope">
-            <el-button @click="application(scope.row)" type="text" size="small"
-              >报名</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <password v-model="passwordData" @link="link"> </password>
+      <el-dialog title="请输入项目名称/编号查找" :visible.sync="dialogVisible" width="60%">
+        项目名称/编号：
+        <el-input v-model="searchData" suffix-icon="el-icon-search" style="width: 200px"></el-input>
+        <el-button type="primary" @click="search">查询</el-button>
+        <el-table :data="tableData2" style="width: 100%">
+          <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
+          </el-table-column>
+          <el-table-column fixed="right" label="操作">
+            <template slot-scope="scope">
+              <el-button @click="application(scope.row)" type="text" size="small">报名</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
+      <password v-model="passwordData" @link="link"> </password>
+    </div>
   </div>
 </template>
 
@@ -78,7 +63,7 @@ export default {
   },
   data() {
     return {
-      activeName: "采购公告",
+      activeName: "cg",
       tabsList: [
         { name: "采购公告", value: "cg" },
         { name: "更正公告", value: 'gz' },
@@ -87,31 +72,29 @@ export default {
         { name: "废标公告", value: 'fb' },
       ],
       tableData: [
-        {
-          time: "2016-05-02",
-          name: "XXXXXXX招标",
-        },
-        {
-          time: "2016-05-04",
-          name: "XXXXXXX招标",
-        },
-        {
-          time: "2016-05-01",
-          name: "XXXXXXX招标",
-        },
       ],
       tableData2: [
+      ],
+      columns: [
         {
-          time: "2016-05-02",
-          name: "XXXXXXX招标",
+          title: '名称',
+          key: 'name'
         },
         {
-          time: "2016-05-04",
-          name: "XXXXXXX招标",
+          title: '编号',
+          key: 'code'
         },
         {
-          time: "2016-05-01",
-          name: "XXXXXXX招标",
+          title: '开标时间',
+          key: 'time'
+        },
+        {
+          title: '报名开始时间',
+          key: 'startTime'
+        },
+        {
+          title: '报名结束时间',
+          key: 'endTime'
         },
       ],
       passwordData: { dialogVisible: false, count: null, type: "" },
@@ -162,14 +145,15 @@ export default {
     search() {
       // 前端模糊查询
       this.tableData2 = this.metaTable?.purchase?.filter((item) => {
-        return ~item.name.indexOf(this.searchData) || ~item.time.indexOf(this.searchData)
+        return ~item.name.indexOf(this.searchData) || ~item.code.indexOf(this.searchData)
       })
     },
     getAnnouncements() {
       // 获取公告信息
       getAnnouncements().then((res) => {
         this.metaTable = res.data.announcements
-        // this.tableData2 = res.data.announcements?.purchase // 采购公告
+        this.tableData = res.data.announcements?.purchase
+        this.tableData2 = res.data.announcements?.purchase // 采购公告
       })
     }
   },
@@ -190,6 +174,5 @@ export default {
   margin-bottom: 40px;
 }
 
-.portal_bottom {
-}
+.portal_bottom {}
 </style>

@@ -16,6 +16,9 @@
   text-align: center;
   color: #2c3e50;
   text-align: center;
+  box-sizing: border-box;
+  widows: 100%;
+  margin: 0;
 }
 
 nav {

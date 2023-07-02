@@ -1,11 +1,5 @@
 import request from "./request.js";
 
-export function login() {
-  return request({
-    url: "/api/banner",
-    method: "get",
-  });
-}
 export function getBanners() {
   // 首页轮播
   return request({

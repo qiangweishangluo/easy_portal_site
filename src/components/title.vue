@@ -27,7 +27,7 @@ export default {
   font-size: 32px;
   line-height: 32px;
   width: 100%;
-  background: url(@/assets/banner.jpeg);
+  background: url(@/assets/banner.jpg);
   height: 200px;
   background-repeat: round;
   background-size: 100%;
@@ -39,7 +39,8 @@ export default {
   font-size: 32px;
   line-height: 32px;
   // padding: 60px 30px 30px;
-  color: rgb(214, 49, 49);
+  // color: rgb(214, 49, 49);
+  font-weight: bolder;
   font-family: 'BebasNeueRegular', Arial, sans-serif;
   text-shadow: 10px 10px 2px rgba(0, 0, 0, 0.2);
 
@@ -70,7 +71,7 @@ export default {
   left: 0;
   width: 100%;
   height: 4px;
-  background: red;
+  // background: red;
 }
 
 
