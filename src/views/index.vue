@@ -31,6 +31,12 @@
         <el-button type="primary" @click="search">查询</el-button>
         <el-table :data="tableData2" style="width: 100%">
           <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
+            <template slot-scope="scope">
+              <a v-if="item.key == 'name' && scope.row.detail" :href="scope.row.detail.url">{{ scope.row.name }}</a>
+              <div v-else>
+                {{ scope.row[item.key] }}
+              </div>
+            </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
@@ -125,8 +131,8 @@ export default {
           break;
       }
     },
-    application() {
-      this.$router.push("/application");
+    application(data) {
+      this.$router.push({ path: "/application", query: data });
     },
     login() {
       login().then((res) => {
