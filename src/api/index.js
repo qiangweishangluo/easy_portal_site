@@ -23,3 +23,12 @@ export function getIdentification() {
     method: "get",
   });
 }
+
+export function postApplication(data) {
+  // 报名接口
+  return request({
+    url: "/api/application",
+    method: "post",
+    data
+  });
+}
