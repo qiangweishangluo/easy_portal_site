@@ -30,8 +30,13 @@
   }
     " :on-success="(res, file) => {
     return handleAvatarSuccess(res, file, 'imageUrl');
-  }" :show-file-list="false" :file-list="fileList" :data="{ ...extra, businessType: 4 }">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  }" :on-remove="(file, fileList) => {
+  return handleRemove(file, fileList, 'imageUrl');
+}" :file-list="fileList" :data="{ ...extra, businessType: 4 }">
+                <template v-if="imageUrl">
+                  <img v-if="imageUrl.includes('png') || imageUrl.includes('jpg')" :src="imageUrl" class="avatar">
+                  {{ }}
+                </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -44,8 +49,12 @@
   }
     " :on-success="(res, file) => {
     return handleAvatarSuccess(res, file, 'imageUrl2');
-  }" :show-file-list="false" :file-list="fileList2" :data="{ ...extra, businessType: 5 }">
-                <img v-if="imageUrl2" :src="imageUrl2" class="avatar">
+  }" :on-remove="(file, fileList) => {
+  return handleRemove(file, fileList, 'imageUrl2');
+}" :file-list="fileList2" :data="{ ...extra, businessType: 5 }">
+                <template v-if="imageUrl2">
+                  <img v-if="imageUrl2.includes('png')" :src="imageUrl2" class="avatar">
+                </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -75,8 +84,12 @@
   }
     " :on-success="(res, file) => {
     return handleAvatarSuccess(res, file, 'imageUrl3');
-  }" :show-file-list="false" :file-list="fileList3" :data="{ ...extra, businessType: 6 }">
-                <img v-if="imageUrl3" :src="imageUrl3" class="avatar">
+  }" :on-remove="(file, fileList) => {
+  return handleRemove(file, fileList, 'imageUrl3');
+}" :file-list="fileList3" :data="{ ...extra, businessType: 6 }">
+                <template v-if="imageUrl3">
+                  <img v-if="imageUrl3.includes('png')" :src="imageUrl3" class="avatar">
+                </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload> </el-form-item>
             <el-form-item label="授权委托书扫描件">
@@ -88,8 +101,12 @@
   }
     " :on-success="(res, file) => {
     return handleAvatarSuccess(res, file, 'imageUrl4');
-  }" :show-file-list="false" :file-list="fileList4" :data="{ ...extra, businessType: 7 }">
-                <img v-if="imageUrl4" :src="imageUrl4" class="avatar">
+  }" :on-remove="(file, fileList) => {
+  return handleRemove(file, fileList, 'imageUrl4');
+}" :file-list="fileList4" :data="{ ...extra, businessType: 7 }">
+                <template v-if="imageUrl4">
+                  <img v-if="imageUrl4.includes('png')" :src="imageUrl4" class="avatar">
+                </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload></el-form-item>
             <el-form-item label="付款凭证">
@@ -101,8 +118,12 @@
   }
     " :on-success="(res, file) => {
     return handleAvatarSuccess(res, file, 'imageUrl5');
-  }" :show-file-list="false" :file-list="fileList5" :data="{ ...extra, businessType: 8 }">
-                <img v-if="imageUrl5" :src="imageUrl5" class="avatar">
+  }" :on-remove="(file, fileList) => {
+  return handleRemove(file, fileList, 'imageUrl5');
+}" :file-list="fileList5" :data="{ ...extra, businessType: 8 }">
+                <template v-if="imageUrl5">
+                  <img v-if="imageUrl5.includes('png')" :src="imageUrl5" class="avatar">
+                </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload> </el-form-item>
           </el-col>
@@ -121,7 +142,8 @@
   </div>
 </template>
 <script>
-import { getIdentification, postApplication } from '@/api/index'
+/* eslint-disable */
+import { getIdentification, postApplication, getPayQrCode } from '@/api/index'
 import portalTitle from "@/components/title.vue";
 export default {
   name: "Application",
@@ -155,7 +177,8 @@ export default {
       imageUrl4: '',
       imageUrl5: '',
       password: '',
-      extra: {}
+      extra: {},
+      twoImg: ""
     };
   },
   created() {
@@ -165,6 +188,7 @@ export default {
     this.url = detail.url
     // 获取密码
     this.getIdentification()
+    this.getPayQrCode()
   },
   methods: {
     getIdentification() {
@@ -173,6 +197,14 @@ export default {
         if (res.code == 0) {
           this.password = res.data.identification
           this.extra = { identification: this.password }
+        }
+      })
+    },
+    getPayQrCode() {
+      // 获取二维码
+      return getPayQrCode().then((res) => {
+        if (res.code == 0) {
+          console.log(res);
         }
       })
     },
@@ -225,19 +257,17 @@ export default {
     // this[type] = [response.data]
     // },
     handleAvatarSuccess(res, file, type) {
-      console.log(type);
-      this[type] = URL.createObjectURL(file.raw);
+      this[type] = file.response.data.url;
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    handleRemove(file, fileList, type) {
+      this[type] = '';
     },
     handlePreview(file) {
       console.log(file);
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
-        } 个文件`
+        `当前限制上传1个文件，请重新上传`
       );
     },
   },
