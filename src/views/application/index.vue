@@ -59,7 +59,11 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="招标文书费二维码">
-              <img src="@/assets/logo.png" alt="" />
+              <img style="width: 300px;" src="/api/payQrCode" alt="" />
+            </el-form-item>
+            <el-form-item label="授权委托书模板下载">
+              <!-- <img style="width: 300px;" src="/api/payQrCode" alt="" /> -->
+              <a href="/api/applyTemplate">授权委托书模板</a>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -143,7 +147,7 @@
 </template>
 <script>
 /* eslint-disable */
-import { getIdentification, postApplication, getPayQrCode } from '@/api/index'
+import { getIdentification, postApplication } from '@/api/index'
 import portalTitle from "@/components/title.vue";
 export default {
   name: "Application",
@@ -188,7 +192,6 @@ export default {
     this.url = detail.url
     // 获取密码
     this.getIdentification()
-    this.getPayQrCode()
   },
   methods: {
     getIdentification() {
@@ -197,14 +200,6 @@ export default {
         if (res.code == 0) {
           this.password = res.data.identification
           this.extra = { identification: this.password }
-        }
-      })
-    },
-    getPayQrCode() {
-      // 获取二维码
-      return getPayQrCode().then((res) => {
-        if (res.code == 0) {
-          console.log(res);
         }
       })
     },

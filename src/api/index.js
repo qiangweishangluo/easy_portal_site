@@ -32,11 +32,3 @@ export function postApplication(data) {
     data
   });
 }
-
-export function getPayQrCode() {
-  // 获取招标文书二维码
-  return request({
-    url: "/api/payQrCode",
-    method: "get",
-  });
-}
