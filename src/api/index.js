@@ -32,3 +32,57 @@ export function postApplication(data) {
     data
   });
 }
+
+export function postBid(data) {
+  // 投标接口
+  return request({
+    url: "/api/bid",
+    method: "post",
+    data
+  });
+}
+
+export function getBid(data) {
+  // 投标接口
+  return request({
+    url: "/api/bid",
+    method: "get",
+    params: data
+  });
+}
+
+export function checkPassword(data) {
+  // 密码校验
+  return request({
+    url: "/api/application/check",
+    method: "get",
+    params: data
+  });
+}
+// 开标阶段
+export function bidCheck(data) {
+  // 开标校验
+  return request({
+    url: "/api/bid/check",
+    method: "get",
+    params: data
+  });
+}
+// 签到
+export function signIn(data) {
+  // 签到
+  return request({
+    url: "/api/signIn",
+    method: "post",
+    params: data
+  });
+}
+// 投标列标(签到阶段)
+export function getBids(data) {
+  // 投标列标(签到阶段)
+  return request({
+    url: "/api/bids",
+    method: "get",
+    params: data
+  });
+}

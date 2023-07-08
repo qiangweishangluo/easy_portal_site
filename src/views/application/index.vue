@@ -35,7 +35,6 @@
 }" :file-list="fileList" :data="{ ...extra, businessType: 4 }">
                 <template v-if="imageUrl">
                   <img v-if="imageUrl.includes('png') || imageUrl.includes('jpg')" :src="imageUrl" class="avatar">
-                  {{ }}
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>

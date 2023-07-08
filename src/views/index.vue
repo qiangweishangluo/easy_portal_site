@@ -146,7 +146,7 @@ export default {
     },
     link() {
       // 校验密码是否通过，再进行跳转
-      this.$router.push(`/${this.passwordData.type}`);
+      this.$router.push({ path: `/${this.passwordData.type}`, query: { password: this.passwordData.count } });
     },
     search() {
       // 前端模糊查询
