@@ -106,7 +106,11 @@ export default {
           ]
         }
       }).then((res) => {
-        console.log(res);
+        if (res.code == 0) {
+          this.$message.success(
+            `投标成功`
+          );
+        }
       })
     },
     getBid() {

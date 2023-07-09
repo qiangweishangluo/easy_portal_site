@@ -1,58 +1,48 @@
 <template>
-  <div class="aq">
+  <div>
     <portalTitle />
-    <div class="main">需要你方澄清内容：</div>
-    <div class="main">
-      {{ content }}
-    </div>
-    <el-form class="main" ref="form" :model="form" label-width="140px">
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="澄清文件上传：">
-            <el-upload
-              class="upload-demo"
-              action=""
-              :on-preview="
-                (file) => {
-                  return handlePreview(file, 'fileList');
-                }
-              "
-              multiple
-              :limit="3"
-              :on-exceed="
-                (files, fileList) => {
-                  return handleExceed(files, fileList, 'fileList');
-                }
-              "
-              :file-list="fileList"
-            >
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">
-                只能上传jpg/png文件，且不超过500kb
-              </div>
-            </el-upload>
-          </el-form-item>
-        </el-col>
-
-        <el-col :span="12">
-          <el-form-item label="二次报价：">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <div style="width: 100%; text-align: center">
-        <el-button type="primary" @click="onSubmit">提交澄清</el-button>
+    <div class="aq">
+      <div class="main">需要你方澄清内容：</div>
+      <div class="main">
+        {{ content }}
       </div>
-    </el-form>
-    <el-dialog title="" :visible.sync="dialogVisible" width="30%">
-      <div>提交成功</div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+      <el-form class="main" ref="form" :model="form" label-width="140px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="澄清文件上传：">
+              <el-upload class="upload-demo" action="" :on-preview="(file) => {
+                return handlePreview(file, 'fileList');
+              }
+                " multiple :limit="3" :on-exceed="(files, fileList) => {
+    return handleExceed(files, fileList, 'fileList');
+  }
+    " :file-list="fileList">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png文件，且不超过500kb
+                </div>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="二次报价：">
+              <el-input v-model="form.name"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div style="width: 100%; text-align: center">
+          <el-button type="primary" @click="onSubmit">提交澄清</el-button>
+        </div>
+      </el-form>
+      <el-dialog title="" :visible.sync="dialogVisible" width="30%">
+        <div>提交成功</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -85,8 +75,7 @@ export default {
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
         } 个文件`
       );
     },
@@ -98,6 +87,7 @@ export default {
   width: 1366px;
   margin: 0 auto;
 }
+
 .main {
   margin-top: 100px;
   text-align: left;

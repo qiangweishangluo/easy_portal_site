@@ -12,13 +12,19 @@
             <el-form-item label="项目编号">
               <div class="textLeft">{{ code }}</div>
             </el-form-item>
-            <el-form-item label="联系人">
+            <el-form-item prop="applicantName" label="联系人" :rules="[
+              { required: true, message: '请输入联系人', trigger: 'blur' },
+            ]">
               <el-input v-model="form.applicantName"></el-input>
             </el-form-item>
-            <el-form-item label="联系电话">
+            <el-form-item label="联系电话" prop="phone" :rules="[
+              { required: true, message: '请输入联系电话', trigger: 'blur' },
+            ]">
               <el-input v-model="form.phone"></el-input>
             </el-form-item>
-            <el-form-item label="联系地址">
+            <el-form-item label="联系地址" prop="address" :rules="[
+              { required: true, message: '请输入联系地址', trigger: 'blur' },
+            ]">
               <el-input v-model="form.address"></el-input>
             </el-form-item>
             <el-form-item label="营业执照扫描件">
@@ -66,16 +72,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="投标单位名称">
+            <el-form-item label="投标单位名称" prop="company" :rules="[
+              { required: true, message: '请输入投标单位名称', trigger: 'blur' },
+            ]">
               <el-input v-model="form.company"></el-input>
             </el-form-item>
-            <el-form-item label="营业执照编号">
+            <el-form-item label="营业执照编号" prop="businessLicense" :rules="[
+              { required: true, message: '请输入营业执照编号', trigger: 'blur' },
+            ]">
               <el-input v-model="form.businessLicense"></el-input>
             </el-form-item>
-            <el-form-item label="法定代表人姓名">
+            <el-form-item label="法定代表人姓名" prop="corporate" :rules="[
+              { required: true, message: '请输入法定代表人姓名', trigger: 'blur' },
+            ]">
               <el-input v-model="form.corporate"></el-input>
             </el-form-item>
-            <el-form-item label="授权委托人姓名">
+            <el-form-item label="授权委托人姓名" prop="consignor" :rules="[
+              { required: true, message: '请输入授权委托人姓名', trigger: 'blur' },
+            ]">
               <el-input v-model="form.consignor"></el-input>
             </el-form-item>
             <el-form-item label="法定代表人身份证扫描件">
@@ -160,14 +174,14 @@ export default {
       url: "",
       dialogVisible: false,
       form: {
-        code: "项目编码",
-        applicantName: "申请人",
-        phone: "电话",
-        address: "地址",
-        company: "投标公司",
-        businessLicense: "营业执照",
-        corporate: "法人",
-        consignor: "委托人",
+        code: "",
+        applicantName: "",
+        phone: "",
+        address: "",
+        company: "",
+        businessLicense: "",
+        corporate: "",
+        consignor: "",
       },
       fileList: [],
       fileList2: [],
@@ -203,7 +217,14 @@ export default {
       })
     },
     onSubmit() {
-      this.dialogVisible = true;
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.dialogVisible = true;
+        } else {
+          // console.log('error submit!!');
+          return false;
+        }
+      });
     },
     postApplication() {
 
@@ -238,7 +259,11 @@ export default {
           ]
         }
       }).then((res) => {
-        console.log(res);
+        if (res.code == 0) {
+          this.$message.success(
+            `报名成功！`
+          );
+        }
       })
     },
     application() {

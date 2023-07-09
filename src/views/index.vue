@@ -3,9 +3,10 @@
     <portalTitle />
     <div class="home">
       <carousel />
-      <el-tabs class="portal_tabs" v-model="activeName" @tab-click="handleClick" :key="activeName">
+      <el-tabs class="portal_tabs" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane v-for="(item, index) in tabsList" :key="index" :label="item.name" :name="item.value">
-          <el-table :data="tableData" style="width: 100%">
+          <el-table :data="tableData ? tableData.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%"
+            :key="activeName">
             <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
               <template slot-scope="scope">
                 <a v-if="item.key == 'name' && scope.row.detail" :href="scope.row.detail.url">{{ scope.row.name }}</a>
@@ -15,6 +16,8 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination layout="prev, pager, next" :total="tableData.length || 1" @current-change="changePage">
+          </el-pagination>
         </el-tab-pane>
       </el-tabs>
       <el-row>
@@ -29,7 +32,7 @@
         项目名称/编号：
         <el-input v-model="searchData" suffix-icon="el-icon-search" style="width: 200px"></el-input>
         <el-button type="primary" @click="search">查询</el-button>
-        <el-table :data="tableData2" style="width: 100%">
+        <el-table :data="tableData2 ? tableData2.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%">
           <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
             <template slot-scope="scope">
               <a v-if="item.key == 'name' && scope.row.detail" :href="scope.row.detail.url">{{ scope.row.name }}</a>
@@ -44,6 +47,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination layout="prev, pager, next" :total="tableData2.length || 1" @current-change="changePage">
+        </el-pagination>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -57,7 +62,6 @@
 <script>
 import carousel from "@/components/carousel.vue";
 import portalTitle from "@/components/title.vue";
-import { login } from "@/api/index";
 import password from "@/components/password";
 import { getAnnouncements } from "@/api/index"
 export default {
@@ -107,37 +111,37 @@ export default {
       metaTable: {},
       dialogVisible: false,
       searchData: "",
+      page: 1,
     };
   },
   created() { this.getAnnouncements() },
   methods: {
+    changePage(page) {
+      this.page = page
+    },
     handleClick() {
       // 变更列表信息
       switch (this.activeName) {
         case "cg":
-          this.tableData = this.metaTable?.purchase
+          this.tableData = this.metaTable?.purchase || []
           break;
         case "gz":
-          this.tableData = this.metaTable?.amend
+          this.tableData = this.metaTable?.amend || []
           break;
         case "zbgg":
-          this.tableData = this.metaTable?.deal
+          this.tableData = this.metaTable?.deal || []
           break;
         case "zbgz":
-          this.tableData = this.metaTable?.dealJustice
+          this.tableData = this.metaTable?.dealJustice || []
           break;
         case "fb":
-          this.tableData = this.metaTable?.abolish
+          this.tableData = this.metaTable?.abolish || []
           break;
       }
+      this.page = 1
     },
     application(data) {
       this.$router.push({ path: "/application", query: data });
-    },
-    login() {
-      login().then((res) => {
-        console.log(res);
-      });
     },
     open(data) {
       // 打开校验密码组件、type处理分类信息
@@ -158,8 +162,8 @@ export default {
       // 获取公告信息
       getAnnouncements().then((res) => {
         this.metaTable = res.data.announcements
-        this.tableData = res.data.announcements?.purchase
-        this.tableData2 = res.data.announcements?.purchase // 采购公告
+        this.tableData = res.data.announcements?.purchase || []
+        this.tableData2 = res.data.announcements?.purchase || [] // 采购公告
       })
     }
   },
