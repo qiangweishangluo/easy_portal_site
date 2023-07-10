@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       tableLabel: [
-        { label: "项目名称", value: "name" },
+        { label: "项目名称", value: "projectName" },
         { label: "投标报价", value: "quotedPrice" },
         { label: "投标履约期限", value: "deadline" },
         { label: "授权委托人名称", value: "consignor" },

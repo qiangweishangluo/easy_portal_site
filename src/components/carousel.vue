@@ -1,6 +1,6 @@
 <template>
   <div class="carousel">
-    <carousel-3d :key="flash" :perspective="0" :autoplay="true" :autoplayTimeout="1000" :space="400" :display="3"
+    <carousel-3d :key="flash" :perspective="0" :autoplay="true" :autoplayTimeout="15000" :space="400" :display="3"
       :controls-visible="true" :controls-prev-html="'&#10092; '" :controls-next-html="'&#10093;'" :controls-width="30"
       :controls-height="60" width="800" height="533">
       <slide v-for="(item, i) in imgList" :index="i" :key="i">
