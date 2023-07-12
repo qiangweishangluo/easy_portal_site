@@ -13,7 +13,7 @@ a
 </template>
 <script>
 /* eslint-disable */
-import { checkPassword } from "@/api/index";
+import { checkPassword, clarification } from "@/api/index";
 export default {
   name: "checkPassword",
   model: {
@@ -52,11 +52,28 @@ export default {
         }
       })
     },
+    clarification() {
+      clarification({ identification: this.password.count }).then((res) => {
+        if (res.code == 0) {
+          this.password.dialogVisible = false;
+          this.$emit("link", res.data);
+        } else {
+          this.$message.warning(res.message);
+        }
+      })
+    },
     onSubmit() {
       if (this.password.count == null) {
         this.$message.error("请输入密码");
+        return
       }
-      this.checkPassword()
+      if (this.password.type == 'aq') {
+        // 澄清答疑需要另外的接口，判断是否需要答疑
+        this.clarification()
+      }
+      else {
+        this.checkPassword()
+      }
     },
     handleClose() {
       this.password.dialogVisible = false;

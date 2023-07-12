@@ -13,12 +13,17 @@
           <el-button type="primary" @click="signIn" style="margin-top: 100px;">签到</el-button>
         </div>
         <div class="main" v-if="status == 3">
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column v-for="(item, index) in tableLabel" :key="index" :prop="item.value" :label="item.label"
-              :formatter="formatter">
-            </el-table-column>
-          </el-table>
-          <div class="main" style="font-weight: bold;font-size: 24px;">开标唱标环节到此结束，如需澄清答疑将现场通知，请保持通讯工具畅通</div>
+          <div v-if="tableData.length < 3">
+            已流标
+          </div>
+          <div v-else>
+            <el-table :data="tableData" style="width: 100%">
+              <el-table-column v-for="(item, index) in tableLabel" :key="index" :prop="item.value" :label="item.label"
+                :formatter="formatter">
+              </el-table-column>
+            </el-table>
+            <div class="main" style="font-weight: bold;font-size: 24px;">开标唱标环节到此结束，如需澄清答疑将现场通知，请保持通讯工具畅通</div>
+          </div>
           <el-button type="primary" @click="finish" style="margin-top: 100px;">开标结束</el-button>
         </div>
         <div class="main" v-if="status == 1">
@@ -85,7 +90,11 @@ export default {
     signIn() {
       signIn({ identification: this.password }).then((res) => {
         // 签到
-        if (res.code == 0) { }
+        if (res.code == 0) {
+          this.$message.success(
+            `签到成功`
+          );
+        }
       })
     },
     getBids() {

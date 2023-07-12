@@ -59,6 +59,15 @@ export function checkPassword(data) {
     params: data
   });
 }
+
+export function clarification(data) {
+  // 澄清校验
+  return request({
+    url: "/api/clarification",
+    method: "get",
+    params: data
+  });
+}
 // 开标阶段
 export function bidCheck(data) {
   // 开标校验
@@ -84,5 +93,14 @@ export function getBids(data) {
     url: "/api/bids",
     method: "get",
     params: data
+  });
+}
+
+export function postClarification(data) {
+  // 更新澄清
+  return request({
+    url: "/api/clarification",
+    method: "post",
+    data
   });
 }
