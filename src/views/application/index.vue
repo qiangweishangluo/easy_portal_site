@@ -3,7 +3,7 @@
     <portalTitle />
     <div class="application">
       <div class="main"></div>
-      <el-form ref="form" :model="form" label-width="130px" label-position="left">
+      <el-form ref="form" :model="form" label-width="200px" label-position="left">
         <el-row>
           <el-col :span="12">
             <el-form-item label="项目名称">
@@ -28,7 +28,7 @@
               <el-input v-model="form.address"></el-input>
             </el-form-item>
             <el-form-item label="营业执照扫描件">
-              <el-upload class="upload-demo" action="/api/upload" ref="upload" :on-preview="(file) => {
+              <el-upload class="upload-demo" accept="image/*,.pdf" action="/api/upload" ref="upload" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " :limit="1" :on-exceed="(files, fileList) => {
@@ -43,10 +43,13 @@
                   <img v-if="imageUrl.includes('png') || imageUrl.includes('jpg')" :src="imageUrl" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png/pdf文件，且不超过50MB
+                </div>
               </el-upload>
             </el-form-item>
             <el-form-item label="授权委托人身份证扫描件">
-              <el-upload class="upload-demo" action="/api/upload" ref="upload2" :on-preview="(file) => {
+              <el-upload class="upload-demo" accept="image/*,.pdf" action="/api/upload" ref="upload2" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " :limit="1" :on-exceed="(files, fileList) => {
@@ -61,6 +64,10 @@
                   <img v-if="imageUrl2.includes('png')" :src="imageUrl2" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png/pdf文件，且不超过50MB
+                </div>
               </el-upload>
             </el-form-item>
             <el-form-item label="招标文书费二维码">
@@ -93,7 +100,7 @@
               <el-input v-model="form.consignor"></el-input>
             </el-form-item>
             <el-form-item label="法定代表人身份证扫描件">
-              <el-upload class="upload-demo" action="/api/upload" ref="upload3" :on-preview="(file) => {
+              <el-upload class="upload-demo" accept="image/*,.pdf" action="/api/upload" ref="upload3" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " :limit="1" :on-exceed="(files, fileList) => {
@@ -108,9 +115,13 @@
                   <img v-if="imageUrl3.includes('png')" :src="imageUrl3" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png/pdf文件，且不超过50MB
+                </div>
               </el-upload> </el-form-item>
             <el-form-item label="授权委托书扫描件">
-              <el-upload class="upload-demo" action="/api/upload" ref="upload4" :on-preview="(file) => {
+              <el-upload class="upload-demo" accept="image/*,.pdf" action="/api/upload" ref="upload4" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " :limit="1" :on-exceed="(files, fileList) => {
@@ -125,9 +136,13 @@
                   <img v-if="imageUrl4.includes('png')" :src="imageUrl4" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png/pdf文件，且不超过50MB
+                </div>
               </el-upload></el-form-item>
             <el-form-item label="付款凭证">
-              <el-upload class="upload-demo" action="/api/upload" ref="upload5" :on-preview="(file) => {
+              <el-upload class="upload-demo" accept="image/*,.pdf" action="/api/upload" ref="upload5" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " :limit="1" :on-exceed="(files, fileList) => {
@@ -142,6 +157,10 @@
                   <img v-if="imageUrl5.includes('png')" :src="imageUrl5" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png/pdf文件，且不超过50MB
+                </div>
               </el-upload> </el-form-item>
           </el-col>
         </el-row>

@@ -19,7 +19,7 @@
               <el-input v-model="form.phone"></el-input>
             </el-form-item>
             <el-form-item label="投标文件">
-              <el-upload ref="upload" class="upload-demo" action="/api/upload" :on-preview="(file) => {
+              <el-upload ref="upload" class="upload-demo" action="/api/upload" accept="image/*,.pdf" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " multiple :limit="1" :on-exceed="(files, fileList) => {
@@ -28,7 +28,7 @@
     " :on-success="handleAvatarSuccess" :file-list="fileList" :data="{ identification: password, businessType: 10 }">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png文件，且不超过500kb
+                  只能上传jpg/png/pdf文件，且不超过50MB
                 </div>
               </el-upload>
             </el-form-item>

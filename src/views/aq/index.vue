@@ -10,7 +10,7 @@
         <el-row>
           <el-col v-if="check.isNeedFile" :span="12">
             <el-form-item label="澄清文件上传：">
-              <el-upload class="upload-demo" action="/api/upload" ref="upload" :on-preview="(file) => {
+              <el-upload accept="image/*,.pdf" class="upload-demo" action="/api/upload" ref="upload" :on-preview="(file) => {
                 return handlePreview(file, 'fileList');
               }
                 " :limit="1" :on-exceed="(files, fileList) => {
@@ -19,7 +19,7 @@
     " :file-list="fileList" :data="{ ...extra, businessType: 11 }">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png文件，且不超过500kb
+                  只能上传jpg/png/pdf文件，且不超过50MB
                 </div>
               </el-upload>
             </el-form-item>

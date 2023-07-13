@@ -9,7 +9,10 @@
             :key="activeName">
             <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
               <template slot-scope="scope">
-                <a v-if="item.key == 'name' && scope.row.detail" :href="scope.row.detail.url">{{ scope.row.name }}</a>
+                <div v-if="item.key == 'name' && scope.row.detail">
+                  <a href="#" @click=" source = scope.row.detail.url; nowRow = scope.row; dialogVisible2 = true;">
+                    {{ scope.row.name }}</a>
+                </div>
                 <div v-else>
                   {{ scope.row[item.key] }}
                 </div>
@@ -35,7 +38,10 @@
         <el-table :data="tableData2 ? tableData2.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%">
           <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
             <template slot-scope="scope">
-              <a v-if="item.key == 'name' && scope.row.detail" :href="scope.row.detail.url">{{ scope.row.name }}</a>
+              <div v-if="item.key == 'name' && scope.row.detail">
+                <a href="#" @click=" source = scope.row.detail.url; nowRow = scope.row; dialogVisible2 = true;">
+                  {{ scope.row.name }}</a>
+              </div>
               <div v-else>
                 {{ scope.row[item.key] }}
               </div>
@@ -54,12 +60,19 @@
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog title="公告预览" :visible.sync="dialogVisible2" width="60%">
+        <vue-pdf-embed :source="source" />
+        <span slot="footer" class="dialog-footer" v-if="activeName == 'cg'">
+          <el-button type="primary" @click="application(nowRow)">报名</el-button>
+        </span>
+      </el-dialog>
       <password v-model="passwordData" @link="link"> </password>
     </div>
   </div>
 </template>
 
 <script>
+import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
 import carousel from "@/components/carousel.vue";
 import portalTitle from "@/components/title.vue";
 import password from "@/components/password";
@@ -69,7 +82,7 @@ export default {
   components: {
     carousel,
     portalTitle,
-    password,
+    password, VuePdfEmbed
   },
   data() {
     return {
@@ -110,8 +123,11 @@ export default {
       passwordData: { dialogVisible: false, count: null, type: "" },
       metaTable: {},
       dialogVisible: false,
+      dialogVisible2: false,
       searchData: "",
       page: 1,
+      source: "",
+      nowRow: {},
     };
   },
   created() { this.getAnnouncements() },
@@ -165,7 +181,7 @@ export default {
         this.tableData = res.data.announcements?.purchase || []
         this.tableData2 = res.data.announcements?.purchase || [] // 采购公告
       })
-    }
+    },
   },
 };
 </script>
