@@ -29,7 +29,9 @@
         <el-button type="primary" class="portal_button" @click="open('bid_opening')">开标入口</el-button>
         <el-button type="primary" class="portal_button" @click="open('aq')">澄清/二次报价</el-button>
       </el-row>
-      <div class="portal_bottom">备案：</div>
+      <div class="portal_bottom">
+        <beian></beian>
+      </div>
 
       <el-dialog title="请输入项目名称/编号查找" :visible.sync="dialogVisible" width="60%">
         项目名称/编号：
@@ -61,8 +63,10 @@
         </span>
       </el-dialog>
       <el-dialog title="公告预览" :visible.sync="dialogVisible2" width="60%">
-        <vue-pdf-embed :source="source" />
-        <span slot="footer" class="dialog-footer" v-if="activeName == 'cg'">
+        <div v-loading="loading">
+          <vue-pdf-embed :source="source" />
+        </div>
+        <span slot="footer" class="dialog-footer" v-if="activeName == 'cg'" @rendered="handleDocumentRender">
           <el-button type="primary" @click="application(nowRow)">报名</el-button>
         </span>
       </el-dialog>
@@ -76,13 +80,14 @@ import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
 import carousel from "@/components/carousel.vue";
 import portalTitle from "@/components/title.vue";
 import password from "@/components/password";
+import beian from "@/components/beian";
 import { getAnnouncements } from "@/api/index"
 export default {
   name: "HomeView",
   components: {
     carousel,
     portalTitle,
-    password, VuePdfEmbed
+    password, VuePdfEmbed, beian
   },
   data() {
     return {
@@ -128,10 +133,15 @@ export default {
       page: 1,
       source: "",
       nowRow: {},
+      loading: true,
     };
   },
   created() { this.getAnnouncements() },
   methods: {
+    handleDocumentRender() {
+      console.log(123123);
+      this.loading = false
+    },
     changePage(page) {
       this.page = page
     },
@@ -201,4 +211,8 @@ export default {
 }
 
 .portal_bottom {}
+
+::v-deep .el-loading-mask {
+  background-color: transparent;
+}
 </style>

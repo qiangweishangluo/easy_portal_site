@@ -56,16 +56,18 @@
       </el-dialog> -->
       </el-form>
     </div>
+    <beian></beian>
   </div>
 </template>
 <script>
 /* eslint-disable */
 import portalTitle from "@/components/title.vue";
 import { postBid, getBid } from "@/api/index";
+import beian from "@/components/beian";
 export default {
   name: "bid",
   components: {
-    portalTitle,
+    portalTitle,beian
   },
   data() {
     return {

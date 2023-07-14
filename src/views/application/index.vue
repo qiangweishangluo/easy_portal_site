@@ -175,16 +175,18 @@
         </el-dialog>
       </el-form>
     </div>
+    <beian></beian>
   </div>
 </template>
 <script>
 /* eslint-disable */
+import beian from "@/components/beian";
 import { getIdentification, postApplication } from '@/api/index'
 import portalTitle from "@/components/title.vue";
 export default {
   name: "Application",
   components: {
-    portalTitle,
+    portalTitle, beian
   },
   data() {
     return {

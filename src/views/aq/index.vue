@@ -36,6 +36,7 @@
         </div>
       </el-form>
     </div>
+    <beian></beian>
   </div>
 </template>
 <script>
@@ -43,16 +44,17 @@
 /* eslint-disable */
 import portalTitle from "@/components/title.vue";
 import { postClarification, clarification } from "@/api/index";
+import beian from "@/components/beian";
 export default {
   name: "aq",
   components: {
-    portalTitle,
+    portalTitle,beian
   },
   data() {
     return {
       fileList: [],
       form: {
-        name: "",
+        quotedPrice: "",
       },
       content:
         "本项目评标委员会认为你方招标文件中资格证书主页及副页有效期不一致，现要求你方对此做出澄清，澄清时间为 10时30分前偷期视为放弃澄清资格，特此通知!",
