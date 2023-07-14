@@ -8,7 +8,7 @@ module.exports = defineConfig({
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: "easy",
+    name: "辰泰信德",
     resolve: {
       alias: {
         "@": resolve("src"),
