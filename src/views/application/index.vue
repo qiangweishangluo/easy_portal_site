@@ -170,7 +170,7 @@
         <el-dialog title="报名提示" :visible.sync="dialogVisible" width="60%">
           <span class="password">投标密码：{{ password }}</span>
           <span class="content">重要提示！投标人请务必保存其报名后生成的投标密码，该密码为投标及开标签到时确认投标人身份的唯一凭证！投标密码遗失的请按公告中的联系电话与工作人员联系！</span>
-          <span class="content">投标文件：<a :href="detail.biddingDocument
+          <span class="content">招标文件：<a :href="detail.biddingDocument
             .url">{{ detail.biddingDocument.name }}</a></span>
           <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="application">确认投标并加密</el-button>

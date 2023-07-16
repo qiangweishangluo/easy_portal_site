@@ -171,7 +171,7 @@ export default {
     application(data) {
       // 添加校验
       checkEnable({ code: data.code }).then((res) => {
-        if (res == 0) {
+        if (res.code == 0) {
           this.$router.push({ path: "/application", query: data });
         }
         else {

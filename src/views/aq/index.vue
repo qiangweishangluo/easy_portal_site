@@ -2,7 +2,7 @@
   <div>
     <portalTitle />
     <div class="aq">
-      <div class="main">需要你方澄清内容：</div>
+      <div class="main">{{ `${check.isNeedFile ? '需要你方澄清内容：' : '需要你方二次报价:'}` }}</div>
       <div class="main">
         {{ content }}
       </div>
@@ -29,6 +29,20 @@
             <el-form-item label="二次报价：">
               <el-input v-model="form.quotedPrice"></el-input>
             </el-form-item>
+            <el-form-item label="二次报价文件上传：">
+              <el-upload accept="image/*,.pdf" class="upload-demo" action="/api/upload" ref="upload2" :on-preview="(file) => {
+                return handlePreview(file, 'fileList');
+              }
+                " :limit="1" :on-exceed="(files, fileList) => {
+    return handleExceed(files, fileList, 'fileList');
+  }
+    " :file-list="fileList2" :data="{ ...extra, businessType: 13 }">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png/pdf文件，且不超过10MB
+                </div>
+              </el-upload>
+            </el-form-item>
           </el-col>
         </el-row>
         <div style="width: 100%; text-align: center">
@@ -53,6 +67,7 @@ export default {
   data() {
     return {
       fileList: [],
+      fileList2: [],
       form: {
         quotedPrice: "",
       },
@@ -67,10 +82,11 @@ export default {
   created() {
     const { password, data } = this.$route.query
     this.password = password
-    this.check = data
-    this.content = data.advise
-    this.form.quotedPrice = data.quotedPrice
-    this.fileList = data.files
+    // this.check = data
+    // this.content = data.advise
+    // this.form.quotedPrice = data.quotedPrice
+    // this.fileList = data.files.find((e) => { return e.businessType == "quotedPriceFile" })
+    // this.fileList2 = data.files.find((e) => { return e.businessType == "clarification" })
     this.extra.identification = password
     this.clarification()
   },
@@ -80,7 +96,8 @@ export default {
         if (res.code == 0) {
           this.check = res.data
           this.content = res.data.advise
-          this.fileList = res.data.files
+          this.fileList = [res.data.files.find((e) => { return e.businessType == "clarification" })] || []
+          this.fileList2 = [res.data.files.find((e) => { return e.businessType == "quotedPriceFile" })] || []
           this.form.quotedPrice = res.data.quotedPrice
         } else {
           this.$message.warning(res.message);
@@ -102,16 +119,18 @@ export default {
       );
     },
     postClarification() {
-      const temp = this.$refs.upload.uploadFiles[0]
+      const temp = this.$refs?.upload?.uploadFiles[0]
+      const temp2 = this.$refs?.upload2?.uploadFiles[0]
+      const t = [];
+      temp?.hasOwnProperty('response') ? t.push(temp.response.data) : t.push(temp)
+      temp2?.hasOwnProperty('response') ? t.push(temp2.response.data) : t.push(temp2)
       postClarification(
         {
           ...this.check,
           "detail": {
             ...this.check,
-            "quotedPrice": this.form.quotedPrice,
-            "files": [
-              temp.hasOwnProperty('response') ? temp.response.data : temp
-            ],
+            "quotedPrice": this.check.isQuotedPrice ? this.form.quotedPrice : '',
+            "files": t,
           },
         },
       ).then((res) => {
