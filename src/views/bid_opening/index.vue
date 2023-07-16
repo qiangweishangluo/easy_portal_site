@@ -10,7 +10,7 @@
           <div style="margin-top: 200px;font-weight: bold;font-size: 24px;">{{
             `${name}项目（项目编号：${code}）${message}、请在该开标时间前30分钟完成签到及解密工作`
           }}</div>
-          <el-button type="primary" @click="signIn" style="margin-top: 100px;">签到</el-button>
+          <el-button type="primary" @click="signIn" style="margin-top: 100px;" :disabled="lock">签到</el-button>
         </div>
         <div class="main" v-if="status == 3">
           <div v-if="tableData.length < 3">
@@ -43,7 +43,7 @@ import beian from "@/components/beian";
 export default {
   name: "bid_opening",
   components: {
-    portalTitle,beian
+    portalTitle, beian
   },
   data() {
     return {
@@ -61,7 +61,8 @@ export default {
       message: "",
       status: 0,
       name: 0,
-      code: 0
+      code: 0,
+      lock: false
     };
   },
   created() {
@@ -93,6 +94,7 @@ export default {
       signIn({ identification: this.password }).then((res) => {
         // 签到
         if (res.code == 0) {
+          this.lock = true
           this.$message.success(
             `签到成功`
           );

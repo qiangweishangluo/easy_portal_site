@@ -7,7 +7,8 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="项目名称">
-              <div class="textLeft"><a :href="url">{{ name }}</a></div>
+              <div class="textLeft"><a :href="detail.announcementDocument
+                .url">{{ name }}</a></div>
             </el-form-item>
             <el-form-item label="项目编号">
               <div class="textLeft">{{ code }}</div>
@@ -44,7 +45,7 @@
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过10MB
                 </div>
               </el-upload>
             </el-form-item>
@@ -61,12 +62,12 @@
   return handleRemove(file, fileList, 'imageUrl2');
 }" :file-list="fileList2" :data="{ ...extra, businessType: 5 }">
                 <template v-if="imageUrl2">
-                  <img v-if="imageUrl2.includes('png')" :src="imageUrl2" class="avatar">
+                  <img v-if="imageUrl2.includes('png') || imageUrl2.includes('jpg')" :src="imageUrl2" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过10MB
                 </div>
               </el-upload>
             </el-form-item>
@@ -112,12 +113,12 @@
   return handleRemove(file, fileList, 'imageUrl3');
 }" :file-list="fileList3" :data="{ ...extra, businessType: 6 }">
                 <template v-if="imageUrl3">
-                  <img v-if="imageUrl3.includes('png')" :src="imageUrl3" class="avatar">
+                  <img v-if="imageUrl3.includes('png') || imageUrl3.includes('jpg')" :src="imageUrl3" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过10MB
                 </div>
               </el-upload> </el-form-item>
             <el-form-item label="授权委托书扫描件">
@@ -133,12 +134,12 @@
   return handleRemove(file, fileList, 'imageUrl4');
 }" :file-list="fileList4" :data="{ ...extra, businessType: 7 }">
                 <template v-if="imageUrl4">
-                  <img v-if="imageUrl4.includes('png')" :src="imageUrl4" class="avatar">
+                  <img v-if="imageUrl4.includes('png') || imageUrl4.includes('jpg')" :src="imageUrl4" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过10MB
                 </div>
               </el-upload></el-form-item>
             <el-form-item label="付款凭证">
@@ -154,21 +155,23 @@
   return handleRemove(file, fileList, 'imageUrl5');
 }" :file-list="fileList5" :data="{ ...extra, businessType: 8 }">
                 <template v-if="imageUrl5">
-                  <img v-if="imageUrl5.includes('png')" :src="imageUrl5" class="avatar">
+                  <img v-if="imageUrl5.includes('png') || imageUrl5.includes('jpg')" :src="imageUrl5" class="avatar">
                 </template>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过10MB
                 </div>
               </el-upload> </el-form-item>
           </el-col>
         </el-row>
 
-        <el-button type="primary" @click="onSubmit">报名</el-button>
+        <el-button type="primary" @click="onSubmit" :disabled="lock">报名</el-button>
         <el-dialog title="报名提示" :visible.sync="dialogVisible" width="60%">
           <span class="password">投标密码：{{ password }}</span>
           <span class="content">重要提示！投标人请务必保存其报名后生成的投标密码，该密码为投标及开标签到时确认投标人身份的唯一凭证！投标密码遗失的请按公告中的联系电话与工作人员联系！</span>
+          <span class="content">投标文件：<a :href="detail.biddingDocument
+            .url">{{ detail.biddingDocument.name }}</a></span>
           <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="application">确认投标并加密</el-button>
           </span>
@@ -192,7 +195,7 @@ export default {
     return {
       name: "",
       code: "",
-      url: "",
+      detail: "",
       dialogVisible: false,
       form: {
         code: "",
@@ -216,14 +219,15 @@ export default {
       imageUrl5: '',
       password: '',
       extra: {},
-      twoImg: ""
+      twoImg: "",
+      lock: false
     };
   },
   created() {
     const { name, code, detail } = this.$route.query;
     this.name = name
     this.code = code
-    this.url = detail.url
+    this.detail = detail
     // 获取密码
     this.getIdentification()
   },
@@ -242,7 +246,6 @@ export default {
         if (valid) {
           this.dialogVisible = true;
         } else {
-          // console.log('error submit!!');
           return false;
         }
       });
@@ -281,6 +284,7 @@ export default {
         }
       }).then((res) => {
         if (res.code == 0) {
+          this.lock = true
           this.$message.success(
             `报名成功！`
           );

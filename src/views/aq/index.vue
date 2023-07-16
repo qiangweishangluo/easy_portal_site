@@ -19,7 +19,7 @@
     " :file-list="fileList" :data="{ ...extra, businessType: 11 }">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过10MB
                 </div>
               </el-upload>
             </el-form-item>
@@ -32,7 +32,7 @@
           </el-col>
         </el-row>
         <div style="width: 100%; text-align: center">
-          <el-button type="primary" @click="onSubmit">提交澄清</el-button>
+          <el-button type="primary" @click="onSubmit" :disabled="lock">提交澄清</el-button>
         </div>
       </el-form>
     </div>
@@ -48,7 +48,7 @@ import beian from "@/components/beian";
 export default {
   name: "aq",
   components: {
-    portalTitle,beian
+    portalTitle, beian
   },
   data() {
     return {
@@ -60,7 +60,8 @@ export default {
         "本项目评标委员会认为你方招标文件中资格证书主页及副页有效期不一致，现要求你方对此做出澄清，澄清时间为 10时30分前偷期视为放弃澄清资格，特此通知!",
       extra: {},
       password: "",
-      check: {}
+      check: {},
+      lock: false
     };
   },
   created() {
@@ -115,6 +116,7 @@ export default {
         },
       ).then((res) => {
         if (res.code == 0) {
+          this.lock = true
           this.$message.success('提交成功')
         }
       });

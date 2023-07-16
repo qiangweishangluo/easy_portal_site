@@ -15,6 +15,14 @@ export function getAnnouncements() {
     method: "get",
   });
 }
+export function checkEnable(data) {
+  // 校验报名
+  return request({
+    url: "/api/application/enable",
+    method: "get",
+    params: data
+  });
+}
 
 export function getIdentification() {
   // 获取密码

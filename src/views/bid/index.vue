@@ -28,7 +28,7 @@
     " :on-success="handleAvatarSuccess" :file-list="fileList" :data="{ identification: password, businessType: 10 }">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png/pdf文件，且不超过50MB
+                  只能上传jpg/png/pdf文件，且不超过100MB
                 </div>
               </el-upload>
             </el-form-item>
@@ -46,7 +46,7 @@
           </el-col>
         </el-row>
 
-        <el-button type="primary" @click="onSubmit">投标</el-button>
+        <el-button type="primary" @click="onSubmit" :disabled="lock">投标</el-button>
         <!-- <el-dialog title="投标成功" :visible.sync="dialogVisible" width="60%">
         <span class="password">投标成功</span>
 
@@ -67,7 +67,7 @@ import beian from "@/components/beian";
 export default {
   name: "bid",
   components: {
-    portalTitle,beian
+    portalTitle, beian
   },
   data() {
     return {
@@ -85,7 +85,8 @@ export default {
       fileList: [],
       imageUrl: [],
       password: "",
-      id: ""
+      id: "",
+      lock: false
     };
   },
   created() {
@@ -109,6 +110,7 @@ export default {
         }
       }).then((res) => {
         if (res.code == 0) {
+          this.lock = true
           this.$message.success(
             `投标成功`
           );

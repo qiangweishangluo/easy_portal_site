@@ -9,8 +9,9 @@
             :key="activeName">
             <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
               <template slot-scope="scope">
-                <div v-if="item.key == 'name' && scope.row.detail">
-                  <a href="#" @click=" source = scope.row.detail.url; nowRow = scope.row; dialogVisible2 = true;">
+                <div v-if="item.key == 'name' && scope.row.detail.announcementDocument">
+                  <a href="#"
+                    @click=" source = scope.row.detail.announcementDocument.url; nowRow = scope.row; dialogVisible2 = true;">
                     {{ scope.row.name }}</a>
                 </div>
                 <div v-else>
@@ -40,8 +41,9 @@
         <el-table :data="tableData2 ? tableData2.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%">
           <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
             <template slot-scope="scope">
-              <div v-if="item.key == 'name' && scope.row.detail">
-                <a href="#" @click=" source = scope.row.detail.url; nowRow = scope.row; dialogVisible2 = true;">
+              <div v-if="item.key == 'name' && scope.row.detail.announcementDocument">
+                <a href="#"
+                  @click=" source = scope.row.detail.announcementDocument.url; nowRow = scope.row; dialogVisible2 = true;">
                   {{ scope.row.name }}</a>
               </div>
               <div v-else>
@@ -81,7 +83,7 @@ import carousel from "@/components/carousel.vue";
 import portalTitle from "@/components/title.vue";
 import password from "@/components/password";
 import beian from "@/components/beian";
-import { getAnnouncements } from "@/api/index"
+import { getAnnouncements, checkEnable } from "@/api/index"
 export default {
   name: "HomeView",
   components: {
@@ -96,7 +98,7 @@ export default {
         { name: "采购公告", value: "cg" },
         { name: "更正公告", value: 'gz' },
         { name: "中标（成交）公告", value: 'zbgg' },
-        { name: "中标（成交）公正公告", value: 'zbgz' },
+        { name: "中标（成交）更正公告", value: 'zbgz' },
         { name: "废标公告", value: 'fb' },
       ],
       tableData: [
@@ -167,7 +169,17 @@ export default {
       this.page = 1
     },
     application(data) {
-      this.$router.push({ path: "/application", query: data });
+      // 添加校验
+      checkEnable({ code: data.code }).then((res) => {
+        if (res == 0) {
+          this.$router.push({ path: "/application", query: data });
+        }
+        else {
+          this.$message.error(
+            res.message
+          );
+        }
+      })
     },
     open(data) {
       // 打开校验密码组件、type处理分类信息
