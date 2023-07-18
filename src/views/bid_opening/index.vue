@@ -17,6 +17,7 @@
             已流标
           </div>
           <div v-else>
+            <div style="margin-bottom: 20px;font-weight: bold;">{{ tableData[0].projectName + '开标记录表' }}</div>
             <el-table :data="tableData" style="width: 100%">
               <el-table-column v-for="(item, index) in tableLabel" :key="index" :prop="item.value" :label="item.label"
                 :formatter="formatter">
@@ -48,7 +49,8 @@ export default {
   data() {
     return {
       tableLabel: [
-        { label: "项目名称", value: "projectName" },
+        { label: "投标人名称", value: "bidder" },
+        // { label: "项目名称", value: "projectName" },
         { label: "投标报价", value: "quotedPrice" },
         { label: "投标履约期限", value: "deadline" },
         { label: "授权委托人名称", value: "consignor" },

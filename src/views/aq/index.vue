@@ -104,8 +104,19 @@ export default {
         }
       })
     },
-    onSubmit() {
+    onSubmit2() {
       this.postClarification()
+    },
+    onSubmit() {
+      this.$alert(`请确认上传完毕且上传文件均处于<i class="el-icon-upload-success el-icon-circle-check"
+              style="color:#67C23A"></i>状态`, {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确定',
+        dangerouslyUseHTMLString: true,
+      }).then(() => {
+        this.onSubmit2()
+      }).catch(action => {
+      });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

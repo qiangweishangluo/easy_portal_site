@@ -169,11 +169,13 @@
         <el-button type="primary" @click="onSubmit" :disabled="lock">报名</el-button>
         <el-dialog title="报名提示" :visible.sync="dialogVisible" width="60%">
           <span class="password">投标密码：{{ password }}</span>
+          <span class="password">请确认上传完毕且上传文件均处于<i class="el-icon-upload-success el-icon-circle-check"
+              style="color:#67C23A"></i>状态</span>
           <span class="content">重要提示！投标人请务必保存其报名后生成的投标密码，该密码为投标及开标签到时确认投标人身份的唯一凭证！投标密码遗失的请按公告中的联系电话与工作人员联系！</span>
           <span class="content">招标文件：<a :href="detail.biddingDocument
             .url">{{ detail.biddingDocument.name }}</a></span>
           <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="application">确认投标并加密</el-button>
+            <el-button type="primary" @click="application">确认报名并递交材料</el-button>
           </span>
         </el-dialog>
       </el-form>
@@ -241,13 +243,24 @@ export default {
         }
       })
     },
-    onSubmit() {
+    onSubmit2() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.dialogVisible = true;
         } else {
           return false;
         }
+      });
+    },
+    onSubmit() {
+      this.$alert(`请确认上传完毕且上传文件均处于<i class="el-icon-upload-success el-icon-circle-check"
+              style="color:#67C23A"></i>状态`, {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确定',
+        dangerouslyUseHTMLString: true,
+      }).then(() => {
+        this.onSubmit2()
+      }).catch(action => {
       });
     },
     postApplication() {
