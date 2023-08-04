@@ -5,7 +5,7 @@
       <carousel />
       <el-tabs class="portal_tabs" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane v-for="(item, index) in tabsList" :key="index" :label="item.name" :name="item.value">
-          <el-table :data="tableData ? tableData.slice((page - 1) * 10, (page - 1) * 10 + 10).reverse() : []" style="width: 100%"
+          <el-table :data="tableData ? tableData.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%"
             :key="activeName">
             <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
               <template slot-scope="scope">
@@ -38,7 +38,7 @@
         项目名称/编号：
         <el-input v-model="searchData" suffix-icon="el-icon-search" style="width: 200px"></el-input>
         <el-button type="primary" @click="search">查询</el-button>
-        <el-table :data="tableData2 ? tableData2.slice((page - 1) * 10, (page - 1) * 10 + 10).reverse() : []" style="width: 100%">
+        <el-table :data="tableData2 ? tableData2.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%">
           <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
             <template slot-scope="scope">
               <div v-if="item.key == 'name' && scope.row.detail.announcementDocument">
@@ -148,23 +148,25 @@ export default {
     },
     handleClick() {
       // 变更列表信息
+      let temp = {};
       switch (this.activeName) {
         case "cg":
-          this.tableData = this.metaTable?.purchase || []
+          temp = this.metaTable?.purchase || []
           break;
         case "gz":
-          this.tableData = this.metaTable?.amend || []
+          temp = this.metaTable?.amend || []
           break;
         case "zbgg":
-          this.tableData = this.metaTable?.deal || []
+          temp = this.metaTable?.deal || []
           break;
         case "zbgz":
-          this.tableData = this.metaTable?.dealJustice || []
+          temp = this.metaTable?.dealJustice || []
           break;
         case "fb":
-          this.tableData = this.metaTable?.abolish || []
+          temp = this.metaTable?.abolish || []
           break;
       }
+      this.tableData = temp
       this.page = 1
     },
     application(data) {
@@ -198,9 +200,14 @@ export default {
     getAnnouncements() {
       // 获取公告信息
       getAnnouncements().then((res) => {
-        this.metaTable = res.data.announcements
-        this.tableData = res.data.announcements?.purchase || []
-        this.tableData2 = res.data.announcements?.purchase || [] // 采购公告
+        this.metaTable = res.data.announcements;
+        this.metaTable?.purchase?.reverse()
+        this.metaTable?.amend?.reverse()
+        this.metaTable?.deal?.reverse()
+        this.metaTable?.dealJustice?.reverse()
+        this.metaTable?.abolish?.reverse()
+        this.tableData = this.metaTable?.purchase
+        this.tableData2 = this.metaTable?.purchase  // 采购公告
       })
     },
   },
