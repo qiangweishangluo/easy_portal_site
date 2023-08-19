@@ -99,6 +99,9 @@ export default {
           this.fileList = [res.data.files.find((e) => { return e.businessType == "clarification" })] || []
           this.fileList2 = [res.data.files.find((e) => { return e.businessType == "quotedPriceFile" })] || []
           this.form.quotedPrice = res.data.quotedPrice
+          if (this.fileList.length > 0 || this.fileList2.length > 0 || +this.form.quotedPrice != '') {
+            this.lock = true
+          }
         } else {
           this.$message.warning(res.message);
         }

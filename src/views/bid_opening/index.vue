@@ -12,7 +12,11 @@
           }}</div>
           <el-button type="primary" @click="signIn" style="margin-top: 100px;" :disabled="lock">签到</el-button>
         </div>
-        <div class="main" v-if="status == 3">
+        <div class="main" v-if="status == 1 && signin == 0">
+          <div class="main" style="margin-top: 200px;font-weight: bold;font-size: 24px;">开标唱标环节到此结束，您未签到</div>
+          <el-button type="primary" @click="finish" style="margin-top: 100px;">开标结束</el-button>
+        </div>
+        <div class="main" v-if="status == 1 && signin == 1">
           <div v-if="tableData.length < 3">
             已流标
           </div>
@@ -24,12 +28,8 @@
               </el-table-column>
             </el-table>
             <div class="main" style="font-weight: bold;font-size: 24px;">开标唱标环节到此结束，如需澄清答疑将现场通知，请保持通讯工具畅通</div>
+            <el-button type="primary" @click="finish" style="margin-top: 100px;">开标结束</el-button>
           </div>
-          <el-button type="primary" @click="finish" style="margin-top: 100px;">开标结束</el-button>
-        </div>
-        <div class="main" v-if="status == 1">
-          <div class="main" style="margin-top: 200px;font-weight: bold;font-size: 24px;">开标唱标环节到此结束，您未签到</div>
-          <el-button type="primary" @click="finish" style="margin-top: 100px;">开标结束</el-button>
         </div>
       </template>
     </div>
@@ -64,7 +64,8 @@ export default {
       status: 0,
       name: 0,
       code: 0,
-      lock: false
+      lock: false,
+      signin: 0
     };
   },
   created() {
@@ -82,10 +83,14 @@ export default {
         if (res.code == 0) {
           this.status = res.data.status
           // this.status = 1
-          this.message = res.data.message
+          this.message = res.data?.message
           this.name = res.data.name
           this.code = res.data.code
-          if (this.status == 3) {
+          this.signin = res.data.signin
+          if (this.signin) {
+            this.lock = true
+          }
+          if (this.status == 1 && this.signin == 1) {
             // 当开标时间已过，还需要此人签过到，才能继续调用列表接口
             this.getBids()
           }
