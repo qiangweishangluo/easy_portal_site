@@ -7,15 +7,15 @@
         <el-tab-pane v-for="(item, index) in tabsList" :key="index" :label="item.name" :name="item.value">
           <el-table :data="tableData ? tableData.slice((page - 1) * 10, (page - 1) * 10 + 10) : []" style="width: 100%"
             :key="activeName">
-            <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.key" :label="item.title">
+            <el-table-column v-for="(item2, index) in columns" :key="index" :prop="item.key" :label="item.value==='cg'?item2.title:item2.title2">
               <template slot-scope="scope">
-                <div v-if="item.key == 'name' && scope.row.detail.announcementDocument">
+                <div v-if="item2.key == 'name' && scope.row.detail.announcementDocument">
                   <a href="#"
                     @click=" source = scope.row.detail.announcementDocument.url; nowRow = scope.row; dialogVisible2 = true;">
                     {{ scope.row.name }}</a>
                 </div>
                 <div v-else>
-                  {{ scope.row[item.key] }}
+                  {{ scope.row[item2.key] }}
                 </div>
               </template>
             </el-table-column>
@@ -108,22 +108,27 @@ export default {
       columns: [
         {
           title: '名称',
+          title2: '名称',
           key: 'name'
         },
         {
           title: '编号',
+          title2: '编号',
           key: 'code'
         },
         {
           title: '开标时间',
+          title2: '公示日期',
           key: 'time'
         },
         {
           title: '报名开始时间',
+          title2: '公示开始日期',
           key: 'startTime'
         },
         {
           title: '报名结束时间',
+          title2: '公示结束日期',
           key: 'endTime'
         },
       ],
