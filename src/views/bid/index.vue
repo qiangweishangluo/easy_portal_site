@@ -17,7 +17,7 @@
             <el-form-item label="投标履约期限">
               <el-input v-model="form.deadline"></el-input>
             </el-form-item>
-            <el-form-item label="投标保障金金额">
+            <el-form-item label="投标保证金金额">
               <el-input v-model="form.earnestMoney"></el-input>
             </el-form-item>
             <el-form-item label="联系电话">
